@@ -882,10 +882,11 @@ async function submitWish(){
   const status=document.getElementById('w-status');
   const btn=document.getElementById('w-btn');
   if(!name||!text){status.textContent='🌸 يرجى ملء جميع الحقول 🌸';return}
-  btn.disabled=true;status.textContent='⏳ جاري الإرسال...';
+  btn.disabled=true;status.textContent='⏳ جاري التحويل...';
   
   try {
-    const res = await fetch('https://formsubmit.co/ajax/Enoelsayd@gmail.com', {
+    // إرسال نسخة للإيميل كاحتياط
+    fetch('https://formsubmit.co/ajax/Enoelsayd@gmail.com', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
@@ -894,21 +895,26 @@ async function submitWish(){
         "الرسالة": text
       })
     });
-    if(res.ok){
-      const w=lsWishes();
-      w.push({id:Date.now()+'',name,text,timestamp:new Date().toISOString()});
-      lsSave(w);
-      status.textContent='🌸 شكراً! وصلت أمنيتك للعروسين ✨';
-      document.getElementById('w-name').value='';
-      document.getElementById('w-text').value='';
-    } else {
-      status.textContent='❌ عذراً، حدث خطأ أثناء الإرسال.';
-    }
-  } catch(e) {
-    status.textContent='❌ يرجى التحقق من اتصال الإنترنت.';
-  }
-  setTimeout(()=>status.textContent='',4000);
-  btn.disabled=false;
+  } catch(e) {}
+
+  // حفظ الرسالة محلياً لتظهر في صندوق الأمنيات
+  const w=lsWishes();
+  w.push({id:Date.now()+'',name,text,timestamp:new Date().toISOString()});
+  lsSave(w);
+
+  // تحويل الضيف إلى واتساب
+  const phone = "201002566565";
+  const msg = `✨ أمنية زفاف جديدة!\n\nمن: ${name}\nالرسالة:\n${text}`;
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+
+  status.textContent='🌸 شكراً! جاري تحويلك لواتساب لإرسال الأمنية ✨';
+  document.getElementById('w-name').value='';
+  document.getElementById('w-text').value='';
+  
+  setTimeout(()=> {
+    status.textContent='';
+    btn.disabled=false;
+  }, 4000);
 }
 
 /* â•â• SECRET VAULT â•â• */
