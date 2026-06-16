@@ -349,7 +349,7 @@ html,body{width:100%;min-height:100%;overflow-x:hidden;background:#0a0608;font-f
 
 <!-- VIDEO GATE -->
 <div id="video-gate">
-  <video id="gate-video" playsinline preload="auto" muted>
+  <video id="gate-video" playsinline preload="auto">
     <source src="./VIDEO/Video.mp4" type="video/mp4">
   </video>
   <div class="lbox top"></div>
@@ -904,7 +904,7 @@ async function submitWish(){
 
   // تحويل الضيف إلى واتساب
   const phone = "201002566565";
-  const msg = `✨ أمنية زفاف جديدة!\n\nمن: ${name}\nالرسالة:\n${text}`;
+  const msg = `✨ أمنية زفاف جديدة!\n\nمن : ${name}\nالرسالة :\n${text}`;
   window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
 
   status.textContent='🌸 شكراً! جاري تحويلك لواتساب لإرسال الأمنية ✨';
